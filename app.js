@@ -61,20 +61,38 @@ app.get('/', function(req, res){
 
 app.post('/post-form', function(req, res) {
 
-    mongoose.connect(url);
+    var conn = mongoose.connection;
 
-    var db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', function() {
-        // we're connected!
-    });
+    var user = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName
+    };
 
-    db.Users.insert({'firstName':req.body.firstName, 'lastName':req.body.lastName});
+    conn.collection('Users').insert(user);
+
+    console.log('User:');
+    console.log(user);
 
     //user.addProfile(req.body.firstName, req.body.lastName);
 
     console.log(req.body.firstName);
     res.send(req.body.lastName);
+});
+
+app.get('/api/getAll', function(req, res) {
+
+    MongoClient.connect("mongodb://localhost:27017/Final_Exam", function(err, db) {
+      if(err) { return console.dir(err); }
+
+      var collection = db.collection('Users');
+
+        collection.find().toArray(function(err, data) {
+            console.log(data);
+        });
+    });
+
+res.send();
+
 });
 
 app.listen(port, function(err){
