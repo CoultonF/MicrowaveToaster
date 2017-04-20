@@ -1,0 +1,57 @@
+<link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="bower_components/paper-button/paper-button.html">
+<link rel="import" href="bower_components/polymer/polymer.html">
+<dom-module id="info-module">
+
+    <template>
+        <paper-button on-click="confirmClick" style="background-color:grey;">BUTTON</paper-button>
+        <iron-ajax id="polymerpost" url="http://localhost:3000/getmypolymer" method="POST" handle-as="json" on-response="getCB" with-credentials='true'></iron-ajax>
+        <p>NAME X1: {{jsonobj.x1.name}}</p>
+        <p>ID X1: {{jsonobj.x1.id}}</p>
+        <p>COURSE X1: {{jsonobj.x1.course}}</p>
+        <p>NAME X2: {{jsonobj.x2.name}}</p>
+        <p>ID X2: {{jsonobj.x2.id}}</p>
+        <p>COURSE X2: {{jsonobj.x2.course}}</p>
+
+        <form action="/post-form" method="post">
+            First name:<br>
+            <input type="text" name="firstname" value="First Name">
+            <br>
+            Last name:<br>
+            <input type="text" name="lastname" value="Last Name">
+            <br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </template>
+
+
+
+</dom-module>
+<script>
+
+Polymer({
+
+    is: "info-module",
+
+    confirmClick: function(){
+
+        //this.username = "Working";
+        this.$.polymerpost.generateRequest();
+
+    },
+    getCB: function(data){
+
+        // this.users = data.detail.response;
+        console.log(data.detail.response)
+        this.jsonobj = data.detail.response;
+
+    }
+
+
+
+
+});
+
+
+
+</script>
